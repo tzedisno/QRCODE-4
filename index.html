@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關卡 4：光之守護</title>
+    <style>
+        /* CSS 樣式與關卡 1 相同，確保視覺一致性 */
+        body { font-family: '微軟正黑體', Arial, sans-serif; background-color: #f4f4f9; color: #333; line-height: 1.6; margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+        h2 { color: #ffd700; border-bottom: 3px solid #ffaa00; padding-bottom: 10px; margin-top: 0; }
+        .story { background-color: #fffae6; border-left: 5px solid #ffd700; padding: 15px; margin-bottom: 25px; border-radius: 5px; }
+        .card-selection { margin-bottom: 25px; padding: 15px; border: 1px dashed #007bff; border-radius: 8px; background-color: #e6f0ff; }
+        .card-selection label { margin-right: 20px; font-weight: bold; cursor: pointer; }
+        #use-card-btn { background-color: #ffc107; color: #333; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em; margin-top: 10px; transition: background-color 0.3s; }
+        #use-card-btn:hover { background-color: #e0a800; }
+        #card-output { margin-top: 15px; padding: 10px; background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 4px; display: none; font-weight: bold; color: #0056b3; word-wrap: break-word; }
+        .question { font-size: 1.2em; margin: 20px 0; font-weight: bold; }
+        .options label { display: block; background: #eee; margin-bottom: 10px; padding: 15px; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
+        .options label:hover { background: #ddd; }
+        input[type="radio"] { margin-right: 10px; }
+        #submit-btn { background-color: #28a745; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1em; margin-top: 20px; transition: background-color 0.3s; }
+        #submit-btn:hover { background-color: #1e7e34; }
+        #result-message { margin-top: 30px; padding: 20px; border-radius: 8px; font-size: 1.1em; font-weight: bold; display: none; }
+        .incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); justify-content: center; align-items: center; }
+        .modal-content { background-color: #fefefe; margin: auto; padding: 30px; border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); width: 80%; max-width: 500px; text-align: center; position: relative; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-content h3 { color: #ffd700; font-size: 1.8em; margin-top: 0; margin-bottom: 15px; }
+        .modal-content p { font-size: 1.1em; margin-bottom: 20px; }
+        .modal-content img { max-width: 90%; height: auto; border: 3px solid #ffaa00; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .modal-close-btn { background-color: #28a745; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1em; transition: background-color 0.3s; margin-top: 15px; }
+        .modal-close-btn:hover { background-color: #1e7e34; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>
+            ✨ 關卡 4：螢火蟲樹屋 —〈光之守護：光影精靈・露閃鹿〉
+        </h2>
+        <div class="story">
+            <p><strong>關卡故事：</strong>露閃鹿在螢火蟲樹屋留下了閃亮的密語。這是最後的能量之地，光之符號將引導玩家完成任務。</p>
+        </div>
+
+        <div class="card-selection">
+            <p><strong>💡 選擇一張線索卡 (只能選一張)：</strong></p>
+            <label>
+                <input type="radio" name="clue_card" value="hint" id="hint-card"> 提示卡
+            </label>
+            <label>
+                <input type="radio" name="clue_card" value="event" id="event-card"> 事件卡
+            </label>
+            <button id="use-card-btn" onclick="useCard()">
+                使用所選卡片
+            </button>
+            <div id="card-output"></div>
+        </div>
+        
+        <hr>
+
+        <div class="question">
+            Q: 文山煤礦盛況時期？
+        </div>
+
+        <div class="options">
+            <form id="quiz-form">
+                <label>
+                    <input type="radio" name="answer" value="correct"> 日治時期。
+                </label>
+                <label>
+                    <input type="radio" name="answer" value="wrong1"> 清領時期晚期。
+                </label>
+                <label>
+                    <input type="radio" name="answer" value="wrong2"> 國民政府遷台後初期。
+                </label>
+                <label>
+                    <input type="radio" name="answer" value="wrong3"> 1970 年代能源危機之後。
+                </label>
+            </form>
+        </div>
+
+        <button id="submit-btn" onclick="checkAnswer()">
+            提交最終答案
+        </button>
+
+        <div id="result-message">
+        </div>
+
+    </div>
+
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <h3>🎉 通關成功！ 🎉</h3>
+            <p>恭喜您集滿所有碎片！獲得：</p>
+            <p style="font-size:1.3em; color:#ffd700; font-weight:bold;">「電光徽章碎片」</p>
+            
+            <p style="font-size:1.5em; color:#cc0000; font-weight:bold; margin-top:20px;">
+                四碎片合成「守護精靈徽章」！
+            </p>
+            <p><strong>🔥 結局：召喚守護精靈！</strong> 四隻守護精靈出現並恢復文山區的平衡！</p>
+
+            <p>請截圖此畫面，保存您的最終通關紀錄！</p>
+            
+            <img src="1.png" alt="電光徽章碎片"> 
+
+            <button class="modal-close-btn" onclick="closeModal()">
+                已截圖完成
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const morseCode = "..-. .. .-. . ..-. .-.. -.--";
+        let cardUsed = false;
+
+        function useCard() {
+            if (cardUsed) { alert('線索卡只能使用一次！'); return; }
+
+            const clueOptions = document.getElementsByName('clue_card');
+            let selectedCard = null;
+            const outputDiv = document.getElementById('card-output');
+            const hintCard = document.getElementById('hint-card');
+            const eventCard = document.getElementById('event-card');
+
+            for (let i = 0; i < clueOptions.length; i++) {
+                if (clueOptions[i].checked) { selectedCard = clueOptions[i].value; break; }
+            }
+
+            if (!selectedCard) { alert('請先選擇一張卡片！'); return; }
+
+            outputDiv.style.display = 'block';
+
+            if (selectedCard ===
