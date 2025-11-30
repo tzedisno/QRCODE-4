@@ -98,7 +98,7 @@
             <p style="font-size:1.5em; color:#cc0000; font-weight:bold; margin-top:20px;">
                 四碎片合成「守護精靈徽章」！
             </p>
-            <p><strong>🔥 結局：召喚守護精靈！</strong> 四隻守護精靈出現並恢復文山區的平衡！</p>
+            <p><strong>🔥 結局：召喚守護精靈！</strong> 四隻守護精靈出現並恢復石碇的平衡！</p>
 
             <p>請截圖此畫面，保存您的最終通關紀錄！</p>
             
@@ -131,4 +131,48 @@
 
             outputDiv.style.display = 'block';
 
-            if (selectedCard ===
+            if (selectedCard === 'hint') {
+                outputDiv.innerHTML = '🕵️‍♂️ **提示卡內容：** 當代含有豐富的蔗糖及樟腦以及稻米';
+            } else if (selectedCard === 'event') {
+                outputDiv.innerHTML = `📡 **事件卡內容 (摩斯電碼)：** ${morseCode}`;
+            }
+
+            cardUsed = true;
+            hintCard.disabled = true;
+            eventCard.disabled = true;
+            document.getElementById('use-card-btn').disabled = true;
+            document.getElementById('use-card-btn').innerText = '卡片已使用';
+            alert('線索卡已使用。請查看卡片內容並回答問題。');
+        }
+
+        function checkAnswer() {
+            const options = document.getElementsByName('answer');
+            let selectedValue = null;
+            const resultDiv = document.getElementById('result-message');
+            const rewardModal = document.getElementById('rewardModal');
+
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].checked) { selectedValue = options[i].value; break; }
+            }
+
+            if (selectedValue === 'correct') {
+                resultDiv.style.display = 'none';
+                rewardModal.style.display = 'flex';
+            } else if (selectedValue) {
+                resultDiv.className = 'incorrect';
+                resultDiv.innerHTML = '❌ **很遺憾。** 答案錯誤，請再仔細思考一下線索。';
+                resultDiv.style.display = 'block';
+            } else {
+                resultDiv.className = 'incorrect';
+                resultDiv.innerHTML = '請先選擇一個答案再送出！';
+                resultDiv.style.display = 'block';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('rewardModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
